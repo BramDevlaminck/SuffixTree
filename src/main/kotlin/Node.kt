@@ -1,0 +1,1 @@
+data class Node(var text: String, var children: MutableMap<Char, Node>, var link: Node?)
