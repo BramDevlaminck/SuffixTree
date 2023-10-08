@@ -6,10 +6,12 @@ fun main(args: Array<String>) {
 
     val testData = listOf(
         Entry("xabxa$", 0),
-//        Entry("xabxa$", 0),
+         Entry("acabx$", 0),
     )
     val builder = UkkonenBuilder()
     val res = builder.build(testData)
+    val searched = SuffixTreeSearch(res, testData.joinToString("")).search(res, "abx")
+    searched.forEach { println(it) }
     print("")
 
 }

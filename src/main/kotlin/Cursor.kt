@@ -27,7 +27,7 @@ data class Cursor(var currentNode: Node, var index: Int, val inputString: String
         return IteratorReturnValue.AT_END
     }
 
-    fun atNode(): Boolean = index == 0 //&& currentNode != root
+    fun atNode(): Boolean = index == 0 || index == currentNode.size
 
     fun followLink(indexInString: Int) {
         var currentIndexInString = indexInString
@@ -48,7 +48,7 @@ data class Cursor(var currentNode: Node, var index: Int, val inputString: String
             }
         } else {
             // follow link
-            currentNode = currentNode.link!!
+            currentNode = currentNode.parent!!.link!!
             distanceToTraverse = index
         }
 
@@ -77,6 +77,7 @@ data class Cursor(var currentNode: Node, var index: Int, val inputString: String
         currentNode.parent!!.children[inputString[newInternalNode.range.start]] = newInternalNode
 
         currentNode.range = Range(currentNode.range.start + index, currentNode.range.end)
+        currentNode.parent = newInternalNode
 
         // move the cursor to the just created node, since we are technically completely at the end of that new node
         // this is also used to be able to use addLeafAtPosition since that function uses the new currentNode
@@ -85,7 +86,7 @@ data class Cursor(var currentNode: Node, var index: Int, val inputString: String
     }
 
     fun addLeafFromPosition(i: Int) {
-        val newLeaf = Node(Range(index + i, inputString.length), currentNode, mutableMapOf(), null)
+        val newLeaf = Node(Range(i, inputString.length), currentNode, mutableMapOf(), null)
         currentNode.children[inputString[newLeaf.range.start]] = newLeaf
     }
 

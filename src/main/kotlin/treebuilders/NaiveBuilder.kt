@@ -13,8 +13,8 @@ class NaiveBuilder: TreeBuilder {
         val root = Node(Range(0, 0), null, mutableMapOf(), null)
         val inputString = dataset.joinToString("") { it.protein }
         val cursor = Cursor(root, 0, inputString, root)
+        val endIndex = inputString.length
         for (i in inputString.indices) {
-            val endIndex = inputString.length
             // progress through the tree
             var indexInEntry = i
             var retValue = cursor.next(inputString[i])

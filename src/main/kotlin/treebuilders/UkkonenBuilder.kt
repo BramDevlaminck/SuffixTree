@@ -37,7 +37,7 @@ class UkkonenBuilder : TreeBuilder {
                     }
                     prevInternalNode = newInternalNode
                 }
-                cursor.addLeafFromPosition(i)
+                cursor.addLeafFromPosition(j-1)
                 numleaves++
 
                 // follow the suffix link since the extension is complete
