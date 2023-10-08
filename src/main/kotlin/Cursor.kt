@@ -90,4 +90,9 @@ data class Cursor(var currentNode: Node, var index: Int, val inputString: String
         currentNode.children[inputString[newLeaf.range.start]] = newLeaf
     }
 
+    fun reset() {
+        index = 0
+        currentNode = root
+    }
+
 }
