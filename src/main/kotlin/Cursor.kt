@@ -1,3 +1,5 @@
+import kotlin.math.min
+
 enum class IteratorReturnValue {
     OK, AT_END, IN_WORD
 }
@@ -27,43 +29,41 @@ data class Cursor(var currentNode: Node, var index: Int, val inputString: String
         return IteratorReturnValue.AT_END
     }
 
-    fun atNode(): Boolean = index == 0 || index == currentNode.size
+    fun atNode(): Boolean = index == currentNode.size
 
-    fun followLink(indexInString: Int) {
-        var currentIndexInString = indexInString
+    fun followLink() {
         // root
         if (currentNode == root) {
             return
         }
 
+        var begin = currentNode.range.start
+
         // save how far we have to walk
-        var distanceToTraverse: Int
+        var distanceLeftToWalk: Int
         if (currentNode.parent == root) {
             currentNode = root
-            distanceToTraverse = index - 1
-            if (distanceToTraverse > 0) {
-                currentNode = currentNode.children[inputString[currentIndexInString]]!!
-            } else {
-                index = 0
-            }
+            begin += 1
+            distanceLeftToWalk = index - 1
         } else {
             // follow link
+            distanceLeftToWalk = index // distance before following link
             currentNode = currentNode.parent!!.link!!
-            distanceToTraverse = index
+        }
+        index = currentNode.size
+        //begin += currentNode.size
+
+        while (distanceLeftToWalk > 0) {
+            // move to child
+            currentNode = currentNode.children[inputString[begin]]!!
+
+            // walk as far as possible on current edge
+            val currentAdvance = min(currentNode.size, distanceLeftToWalk)
+            distanceLeftToWalk -= currentAdvance
+            begin += currentAdvance
+            index = currentAdvance
         }
 
-
-        while (distanceToTraverse > 0) {
-            if (currentNode.size < distanceToTraverse) {
-                val traversed = currentNode.size
-                currentNode = currentNode.children[inputString[currentIndexInString + traversed]]!!
-                currentIndexInString += traversed
-                distanceToTraverse -= traversed
-            } else {
-                index = distanceToTraverse
-                distanceToTraverse = 0
-            }
-        }
     }
 
     fun splitEdge(): Node {

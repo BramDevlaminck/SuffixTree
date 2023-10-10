@@ -7,7 +7,7 @@ import Node
 import Range
 
 class UkkonenBuilder : TreeBuilder {
-    override fun build(dataset: List<Entry>): Node {
+    override fun    build(dataset: List<Entry>): Node {
 
         val root = Node(Range(0, 0), null, mutableMapOf(), null)
         val inputString = dataset.joinToString("") { it.protein }
@@ -37,11 +37,11 @@ class UkkonenBuilder : TreeBuilder {
                     }
                     prevInternalNode = newInternalNode
                 }
-                cursor.addLeafFromPosition(j-1)
+                cursor.addLeafFromPosition(j - 1)
                 numleaves++
 
                 // follow the suffix link since the extension is complete
-                cursor.followLink(i + 1)
+                cursor.followLink()
             }
         }
 
