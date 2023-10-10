@@ -4,17 +4,22 @@ import Cursor
 import Entry
 import IteratorReturnValue
 import Node
+import OutputHandler.customPrint
+import OutputHandler.customPrintln
 import Range
 
 class UkkonenBuilder : TreeBuilder {
-    override fun    build(dataset: List<Entry>): Node {
+    override fun build(dataset: List<Entry>): Node {
 
         val root = Node(Range(0, 0), null, mutableMapOf(), null, null)
         val inputString = dataset.joinToString("") { it.protein }
         val cursor = Cursor(root, 0, inputString, root)
         var numleaves = 0
         for (j in 1..inputString.length) {
-
+            if (j % 1000 == 0) {
+                val percent = j/inputString.length.toFloat()
+                customPrint("Building tree progress: [${"#".repeat((50*percent).toInt())}${"-".repeat((50*(1-percent)).toInt())}] ${"%,.2f".format(percent*100)}%\r")
+            }
             var prevInternalNode: Node? = null
 
             // skip the first numLeaves leaves since this is rule 1 and can be skipped
@@ -44,6 +49,7 @@ class UkkonenBuilder : TreeBuilder {
                 cursor.followLink()
             }
         }
+        customPrintln("")
 
         return root
     }

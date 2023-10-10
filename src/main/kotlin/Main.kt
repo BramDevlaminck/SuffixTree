@@ -1,36 +1,38 @@
-import treebuilders.NaiveBuilder
+import OutputHandler.customPrintln
 import treebuilders.UkkonenBuilder
 import java.io.File
 
 fun main(args: Array<String>) {
-//    val data = TsvParser.parse("/Users/brdvlami/Documents/Ugent/MA2/Thesis/Dataset/swissprot_2023_3.tsv")
-//
-//    val testData = listOf(
-//        Entry("xabxa#", 0),
-//         Entry("acabx$", 0),
-//    )
-
-    if (args.size == 0) {
-        println("Only 1 argument expected: the input filename")
+    if (args.isEmpty()) {
+        println("First argument should be the location of the input filename")
         return
     }
+
+    val options = args.asList().subList(1, args.size).toSet()
+
+    if ("--no-progress" in options) {
+        OutputHandler.suppressOutput = true
+    }
+
+    customPrintln("reading input...")
     val filename = args[0]
     var data = File(filename).readText()
     data += "$"
 
     val builder = UkkonenBuilder()
-    println("building suffix tree...")
     val res = builder.build(listOf(Entry(data, 0)))
     val searcher = SuffixTreeSearch(res, data)
-    while (true) {
-        print("Input your search string: ")
-        val inputWord = readlnOrNull()
-        if (inputWord != null) {
-            val searched = searcher.searchProtein(inputWord)
-            println("found ${searched.size} matches")
-            searched.forEach { println(it) }
-        }
+    if ("--build-only" !in options) {
+        while (true) {
+            print("Input your search string: ")
+            val inputWord = readlnOrNull()
+            if (inputWord != null) {
+                val searched = searcher.searchProtein(inputWord)
+                println("found ${searched.size} matches")
+                searched.forEach { println("* $it") }
+            }
 
+        }
     }
 
 }
