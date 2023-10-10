@@ -72,7 +72,9 @@ data class Cursor(var currentNode: Node, var index: Int, val inputString: String
             currentNode.parent,
             mutableMapOf(
                 inputString[currentNode.range.start + index] to currentNode,
-            ), null
+            ),
+            null,
+            null
         )
         currentNode.parent!!.children[inputString[newInternalNode.range.start]] = newInternalNode
 
@@ -85,8 +87,8 @@ data class Cursor(var currentNode: Node, var index: Int, val inputString: String
         return newInternalNode
     }
 
-    fun addLeafFromPosition(i: Int) {
-        val newLeaf = Node(Range(i, inputString.length), currentNode, mutableMapOf(), null)
+    fun addLeafFromPosition(j: Int, suffixIndex: Int) {
+        val newLeaf = Node(Range(j, inputString.length), currentNode, mutableMapOf(), null, suffixIndex)
         currentNode.children[inputString[newLeaf.range.start]] = newLeaf
     }
 

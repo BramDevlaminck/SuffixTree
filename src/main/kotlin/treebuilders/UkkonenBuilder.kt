@@ -9,7 +9,7 @@ import Range
 class UkkonenBuilder : TreeBuilder {
     override fun    build(dataset: List<Entry>): Node {
 
-        val root = Node(Range(0, 0), null, mutableMapOf(), null)
+        val root = Node(Range(0, 0), null, mutableMapOf(), null, null)
         val inputString = dataset.joinToString("") { it.protein }
         val cursor = Cursor(root, 0, inputString, root)
         var numleaves = 0
@@ -37,7 +37,7 @@ class UkkonenBuilder : TreeBuilder {
                     }
                     prevInternalNode = newInternalNode
                 }
-                cursor.addLeafFromPosition(j - 1)
+                cursor.addLeafFromPosition(j - 1, i)
                 numleaves++
 
                 // follow the suffix link since the extension is complete

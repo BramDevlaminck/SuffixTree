@@ -21,7 +21,46 @@ class SuffixTreeSearch(private val tree: Node, private val originalInputString: 
             return false to cursor.currentNode
         }
 
-        fun search(searchString: String): List<String> {
+        fun searchProtein(searchString: String): List<String> {
+            val (matchFound, endNode) = findEndNode(searchString)
+            val suffixIndicesList = mutableListOf<Int>()
+            if (!matchFound) {
+                return emptyList()
+            }
+
+            // find all the indices in the array that the leaves belong to
+            val stack = ArrayDeque(listOf(endNode))
+            while (stack.isNotEmpty()) {
+                val currentNode = stack.removeFirst()
+                if (currentNode.suffixIndex != null) {
+                    suffixIndicesList.add(currentNode.suffixIndex)
+                } else {
+                    stack.addAll(0, currentNode.children.map { it.value })
+                }
+            }
+
+            val solutionList = mutableListOf<String>()
+            // retrieve the proteins
+            suffixIndicesList.forEach {
+                var begin = it
+                var end = it
+                while (begin > 0 && originalInputString[begin - 1] != '#') {
+                    begin--
+                }
+
+                while (originalInputString[end] != '$' && originalInputString[end] != '#') {
+                    end++
+                }
+                solutionList.add(originalInputString.substring(begin, end))
+            }
+
+            // prepare the cursor for next use
+            cursor.reset()
+
+            return solutionList
+        }
+
+        fun searchSuffix(searchString: String): List<String> {
             val (matchFound, endNode) = findEndNode(searchString)
             val solutionList = mutableListOf<String>()
             if (!matchFound) {

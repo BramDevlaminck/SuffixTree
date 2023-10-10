@@ -25,7 +25,7 @@ fun main(args: Array<String>) {
         print("Input your search string: ")
         val inputWord = readlnOrNull()
         if (inputWord != null) {
-            val searched = searcher.search(inputWord)
+            val searched = searcher.searchProtein(inputWord)
             println("found ${searched.size} matches")
             searched.forEach { println(it) }
         }

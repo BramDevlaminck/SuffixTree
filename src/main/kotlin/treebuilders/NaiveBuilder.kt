@@ -10,7 +10,7 @@ class NaiveBuilder: TreeBuilder {
 
     override fun build(dataset: List<Entry>): Node {
 
-        val root = Node(Range(0, 0), null, mutableMapOf(), null)
+        val root = Node(Range(0, 0), null, mutableMapOf(), null, null)
         val inputString = dataset.joinToString("") { it.protein }
         val cursor = Cursor(root, 0, inputString, root)
         val endIndex = inputString.length
@@ -32,8 +32,8 @@ class NaiveBuilder: TreeBuilder {
             // add this entry to the tree in a different way depending on if we are in the middle of an edge or not
             if (retValue == IteratorReturnValue.IN_WORD) {
                 // split the edge
-                val newNode = Node(Range(indexInEntry, endIndex), cursor.currentNode, mutableMapOf(), null)
-                val nodeToInsertInEdge = Node(Range(cursor.currentNode.range.start + cursor.index, cursor.currentNode.range.end), cursor.currentNode, cursor.currentNode.children, null)
+                val newNode = Node(Range(indexInEntry, endIndex), cursor.currentNode, mutableMapOf(), null, null)
+                val nodeToInsertInEdge = Node(Range(cursor.currentNode.range.start + cursor.index, cursor.currentNode.range.end), cursor.currentNode, cursor.currentNode.children, null, null)
                 cursor.currentNode.children = mutableMapOf(
                     inputString[nodeToInsertInEdge.range.start] to nodeToInsertInEdge,
                     inputString[newNode.range.start] to newNode
@@ -41,7 +41,7 @@ class NaiveBuilder: TreeBuilder {
                 cursor.currentNode.range = Range(cursor.currentNode.range.start, cursor.currentNode.range.start + cursor.index)
             } else if (retValue == IteratorReturnValue.AT_END && indexInEntry != endIndex) { // only create a new node if we don't already have an identical node (last check fails in that case)
                 // add new node as child
-                val newNode = Node(Range(indexInEntry, endIndex), cursor.currentNode, mutableMapOf(), null)
+                val newNode = Node(Range(indexInEntry, endIndex), cursor.currentNode, mutableMapOf(), null, null)
                 cursor.currentNode.children[inputString[indexInEntry]] = newNode
             }
 
