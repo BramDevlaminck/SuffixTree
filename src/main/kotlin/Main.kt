@@ -19,6 +19,7 @@ fun main(args: Array<String>) {
     data += "$"
 
     val builder = UkkonenBuilder()
+    println("building suffix tree...")
     val res = builder.build(listOf(Entry(data, 0)))
     val searcher = SuffixTreeSearch(res, data)
     while (true) {
