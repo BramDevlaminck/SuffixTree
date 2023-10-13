@@ -22,17 +22,37 @@ fun main(args: Array<String>) {
     val builder = UkkonenBuilder()
     val res = builder.build(listOf(Entry(data, 0)))
     val searcher = SuffixTreeSearch(res, data)
-    if ("--build-only" !in options) {
-        while (true) {
-            print("Input your search string: ")
-            val inputWord = readlnOrNull()
-            if (inputWord != null) {
-                val searched = searcher.searchProtein(inputWord)
-                println("found ${searched.size} matches")
-                searched.forEach { println("* $it") }
-            }
 
+    var searchFile = ""
+    if (options.any {
+            if (it.startsWith("--searchFile=")) {
+                searchFile = it.removePrefix("--searchFile=")
+                true
+            } else {
+                false
+            }
+        }) {
+        File(searchFile).forEachLine { protein ->
+            val searched = searcher.searchProtein(protein)
+            println("found ${searched.size} matches")
+            searched.forEach { println("* $it") }
+        }
+    } else {
+        if ("--build-only" !in options) {
+            while (true) {
+                print("Input your search string: ")
+                val inputWord = readlnOrNull()
+                if (inputWord != null) {
+                    val searched = searcher.searchProtein(inputWord)
+                    println("found ${searched.size} matches")
+                    searched.forEach { println("* $it") }
+                }
+
+            }
         }
     }
+
+    //TODO: houdt voor elk eiwit een index/mapping bij naar de organisme ID, we zouden de index naar dit organisme ID ook in de bladeren kunnen opslaan, dit kan dan voor LCA* gebruikt worden
+
 
 }
