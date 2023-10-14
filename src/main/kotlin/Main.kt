@@ -34,8 +34,8 @@ fun main(args: Array<String>) {
         }) {
         File(searchFile).forEachLine { protein ->
             val searched = searcher.searchProtein(protein)
-            println("found ${searched.size} matches")
-            searched.forEach { println("* $it") }
+            customPrintln("found ${searched.size} matches")
+            // searched.forEach { customPrintln("* $it") }
         }
     } else {
         if ("--build-only" !in options) {
