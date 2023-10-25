@@ -46,8 +46,7 @@ class NaiveBuilder: TreeBuilder {
             }
 
             // reset the cursor
-            cursor.currentNode = root
-            cursor.index = 0
+            cursor.reset()
         }
 
         return root

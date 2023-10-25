@@ -51,7 +51,6 @@ data class Cursor(var currentNode: Node, var index: Int, val inputString: String
             currentNode = currentNode.parent!!.link!!
         }
         index = currentNode.size
-        //begin += currentNode.size
 
         while (distanceLeftToWalk > 0) {
             // move to child
