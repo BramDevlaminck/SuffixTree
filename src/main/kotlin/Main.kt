@@ -52,7 +52,4 @@ fun main(args: Array<String>) {
         }
     }
 
-    //TODO: houdt voor elk eiwit een index/mapping bij naar de organisme ID, we zouden de index naar dit organisme ID ook in de bladeren kunnen opslaan, dit kan dan voor LCA* gebruikt worden
-
-
 }
